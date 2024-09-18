@@ -5,7 +5,7 @@ import java.util.Random;
  * 快排，不能单纯将数组分成两队进行递归，而是需要分成三块
  */
 public class LeetCode02_912 {
-    public int[] sortArray(int[] nums) {
+    /*public int[] sortArray(int[] nums) {
         //使用“数组换分成三块”，这个在拍重复数字时不会超时
 
 
@@ -42,5 +42,47 @@ public class LeetCode02_912 {
         int tmp = num[m];
         num[m] = num[n];
         num[n] = tmp;
+    }*/
+
+
+    //归并
+    int[] tmp;
+    public int[] sortArray(int[] nums) {
+        //合并排序
+        tmp = new int[nums.length];
+        mergerSort(nums,0,nums.length - 1);
+        return nums;
+    }
+
+    public void mergerSort(int[] nums,int left,int right){
+        //先判断边界条件
+        if(left >= right){
+            return;
+        }
+
+        //1、取中间数，将数组分成两块
+        int mid = (left+right)/2;
+        //[left,mid] [mid +1,right]
+        //2、对左右两边分别排序
+        mergerSort(nums,left,mid);
+        mergerSort(nums,mid+1,right);
+
+        //3、合并，使用两个指针分别指向两个区间的左边界，比较大小并交换位置
+        int cur1 = left,cur2 = mid+1,i = 0;
+        while(cur1 <= mid && cur2 <= right){
+            tmp[i++] = nums[cur1] <= nums[cur2] ? nums[cur1++] : nums[cur2++];
+        }
+        //会存在两个区间的大小不一致，所以还需要处理没有遍历完的数组
+        while(cur1 <= mid){
+            tmp[i++] = nums[cur1++];
+        }
+        while(cur2 <= right){
+            tmp[i++] = nums[cur2++];
+        }
+        //4、复原，将tmp的数组赋值到nums中
+        //范围是[left,right]
+        for(int j = left; j <= right; j++){
+            nums[j] = tmp[j -left];
+        }
     }
 }
