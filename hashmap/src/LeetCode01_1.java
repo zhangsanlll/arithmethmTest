@@ -32,4 +32,12 @@ public class LeetCode01_1 {
         }
         return new int[0];
     }
+
+    public static void main(String[] args) {
+        int[] nums = {1,2,3};
+
+        for(int x :nums){
+            System.out.println(nums[x]);
+        }
+    }
 }
